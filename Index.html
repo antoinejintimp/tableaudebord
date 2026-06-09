@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jint — Dashboard Performance 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --y: #F9C34E; --b: #141817; --w: #fff;
+  --bg: #0f1210; --card: rgba(255,255,255,.04);
+  --border: rgba(255,255,255,.07);
+  --muted: rgba(255,255,255,.35);
+  --green: #22c55e; --orange: #f97316; --red: #ef4444;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--w);min-height:100vh;}
+
+/* HEADER */
+header{background:var(--b);border-bottom:1px solid var(--border);padding:.85rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.logo{display:flex;align-items:center;gap:.65rem;}
+.lm{background:var(--y);color:var(--b);font-weight:700;font-size:.9rem;padding:.22rem .55rem;border-radius:4px;}
+.lt{font-size:.78rem;color:var(--muted);}
+.q-sel{display:flex;gap:.2rem;}
+.qb{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);font-family:'Geist',sans-serif;font-size:.7rem;font-weight:600;padding:.28rem .6rem;border-radius:4px;cursor:pointer;transition:all .15s;}
+.qb.on{background:var(--y);border-color:var(--y);color:var(--b);}
+.qb:not(.on):hover{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.2);}
+
+/* NAV TABS */
+.nav{background:var(--b);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;gap:0;position:sticky;top:60px;z-index:99;box-shadow:0 -8px 0 var(--b);}
+.nb{padding:.75rem 1.4rem;font-size:.78rem;font-weight:500;color:rgba(255,255,255,.4);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;user-select:none;white-space:nowrap;}
+.nb:hover{color:rgba(255,255,255,.75);}
+.nb.on{color:var(--y);border-bottom-color:var(--y);}
+
+/* PAGES */
+.page{display:none;max-width:1380px;margin:0 auto;padding:2rem;animation:fu .22s ease both;}
+.page.on{display:block;}
+@keyframes fu{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
+/* ── OVERVIEW ── */
+
+
+
+
+
+
+
+
+.hero-variable{background:var(--y);border-radius:12px;padding:1.6rem 2rem;display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:1.5rem;margin-bottom:1.5rem;}
+
+
+
+
+
+
+
+
+.okr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+.okr-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.2rem;}
+.okr-lbl{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.7);margin-bottom:.5rem;}
+.okr-val{font-size:1.5rem;font-weight:700;color:var(--w);}
+.okr-tgt{font-size:.68rem;color:var(--muted);margin-top:.1rem;}
+.okr-bar-bg{height:6px;background:rgba(255,255,255,.08);border-radius:3px;margin-top:.75rem;overflow:hidden;}
+.okr-bar{height:100%;border-radius:3px;transition:width .5s ease;}
+.okr-pct{font-size:.68rem;font-weight:600;margin-top:.35rem;}
+.okr-manual{font-size:.62rem;color:rgba(255,255,255,.5);margin-top:.5rem;}
+
+/* Mini summary bar */
+.mini-bar{background:var(--b);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:.9rem 1.4rem;margin-bottom:1.5rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;align-items:center;}
+.mini-lbl{font-size:.58rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,.7);margin-bottom:.25rem;}
+.mini-val{font-size:1.05rem;font-weight:700;color:var(--y);}
+.mini-sub{font-size:.65rem;color:rgba(255,255,255,.6);margin-top:.1rem;}
+
+/* STATUS BADGE */
+.sb{display:inline-flex;align-items:center;gap:.28rem;font-size:.62rem;font-weight:600;padding:.16rem .5rem;border-radius:20px;margin-top:.6rem;}
+.sd{width:5px;height:5px;border-radius:50%;}
+.sg{background:rgba(34,197,94,.15);color:#22c55e;} .sg .sd{background:#22c55e;}
+.sy{background:rgba(249,195,78,.15);color:var(--y);} .sy .sd{background:var(--y);}
+.so{background:rgba(249,115,22,.15);color:#f97316;} .so .sd{background:#f97316;}
+.sr{background:rgba(239,68,68,.15);color:#ef4444;} .sr .sd{background:#ef4444;}
+
+/* ── ENTRY PAGES ── */
+.entry-layout{display:grid;grid-template-columns:1fr 1.6fr;gap:2rem;align-items:start;}
+
+/* FORM PANEL */
+.form-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;}
+.fp-title{font-size:.95rem;font-weight:600;margin-bottom:1.5rem;}
+.field{margin-bottom:.9rem;}
+.field label{display:block;font-size:.68rem;font-weight:600;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem;}
+.inp{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--w);font-family:'Geist',sans-serif;font-size:.82rem;padding:.55rem .75rem;border-radius:7px;outline:none;transition:border-color .15s;}
+.inp::placeholder{color:rgba(255,255,255,.18);}
+.inp:focus{border-color:rgba(249,195,78,.4);}
+select.inp{cursor:pointer;} select.inp option{background:#1a1c19;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.abtn{width:100%;background:var(--y);color:var(--b);border:none;font-family:'Geist',sans-serif;font-size:.82rem;font-weight:700;padding:.65rem 1rem;border-radius:7px;cursor:pointer;margin-top:.4rem;transition:opacity .15s;}
+.abtn:hover{opacity:.85;}
+
+/* LIST PANEL */
+.list-panel{display:flex;flex-direction:column;gap:1rem;}
+.list-header{display:flex;align-items:center;justify-content:space-between;}
+.list-title{font-size:.95rem;font-weight:600;color:rgba(255,255,255,.9);}
+.filter-row{display:flex;gap:.25rem;}
+.fb{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);font-family:'Geist',sans-serif;font-size:.65rem;font-weight:600;padding:.22rem .55rem;border-radius:4px;cursor:pointer;transition:all .15s;}
+.fb.on{background:var(--y);border-color:var(--y);color:var(--b);}
+.fb:not(.on):hover{color:rgba(255,255,255,.7);}
+
+.items-list{display:flex;flex-direction:column;gap:.45rem;max-height:560px;overflow-y:auto;}
+.items-list::-webkit-scrollbar{width:3px;} .items-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px;}
+.item{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:.85rem 1rem;display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;transition:border-color .15s;}
+.item:hover{border-color:rgba(255,255,255,.15);}
+.item-body{flex:1;}
+.item-name{font-size:.85rem;font-weight:600;}
+.item-meta{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem;align-items:center;}
+.tag{background:rgba(249,195,78,.1);color:var(--y);font-size:.62rem;font-weight:600;padding:.1rem .45rem;border-radius:4px;}
+.tag-q{background:rgba(255,255,255,.07);color:rgba(255,255,255,.5);font-size:.62rem;font-weight:600;padding:.1rem .45rem;border-radius:4px;}
+.tag-exp{background:rgba(239,68,68,.1);color:#ef4444;font-size:.62rem;font-weight:600;padding:.1rem .45rem;border-radius:4px;}
+.meta-txt{font-size:.72rem;color:rgba(255,255,255,.6);}
+.amount-txt{font-size:.82rem;font-weight:700;color:var(--y);}
+.del-btn{background:none;border:none;color:rgba(255,255,255,.18);cursor:pointer;font-size:.85rem;transition:color .15s;padding:.1rem;flex-shrink:0;}
+.del-btn:hover{color:var(--red);}
+.empty-msg{font-size:.78rem;color:rgba(255,255,255,.18);text-align:center;padding:2rem;background:var(--card);border:1px dashed var(--border);border-radius:9px;}
+
+/* QUAL */
+.qual-layout{max-width:700px;}
+.qual-btns{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.75rem;}
+.ql-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);font-family:'Geist',sans-serif;font-size:.78rem;font-weight:600;padding:.4rem 1rem;border-radius:6px;cursor:pointer;transition:all .15s;}
+.ql-btn.on{background:var(--y);border-color:var(--y);color:var(--b);}
+.qual-result{margin-top:1.25rem;padding:1.1rem 1.4rem;background:rgba(249,195,78,.07);border:1px solid rgba(249,195,78,.15);border-radius:10px;display:none;}
+.qual-amt{font-size:2rem;font-weight:700;color:var(--y);}
+.qual-desc{font-size:.78rem;color:var(--muted);margin-top:.25rem;}
+.paliers-table{margin-top:1.25rem;display:flex;flex-direction:column;gap:.3rem;}
+.pr{display:flex;justify-content:space-between;align-items:center;font-size:.75rem;padding:.4rem .75rem;border-radius:6px;color:rgba(255,255,255,.3);}
+.pr.ap{background:rgba(249,195,78,.1);color:var(--y);font-weight:600;}
+.pr strong{font-weight:700;}
+
+
+/* ─────────────────────────────────────────────
+   DESIGN PASS V3 — safe visual layer only
+   Aucun impact sur API Google Sheets / structure JS
+───────────────────────────────────────────── */
+:root{
+  --bg:#0b0d0c;
+  --b:#121614;
+  --panel:#171c19;
+  --panel-2:#101311;
+  --card:rgba(255,255,255,.055);
+  --card-2:rgba(255,255,255,.075);
+  --border:rgba(255,255,255,.105);
+  --border-strong:rgba(249,195,78,.24);
+  --muted:rgba(255,255,255,.48);
+  --muted-2:rgba(255,255,255,.28);
+  --shadow:0 24px 70px rgba(0,0,0,.36);
+  --soft-shadow:0 14px 34px rgba(0,0,0,.20);
+  --radius-lg:22px;
+  --radius-md:16px;
+  --radius-sm:10px;
+}
+html{scroll-behavior:smooth;}
+body{
+  background:
+    radial-gradient(circle at 18% -8%, rgba(249,195,78,.14), transparent 28rem),
+    radial-gradient(circle at 88% 8%, rgba(34,197,94,.055), transparent 22rem),
+    linear-gradient(180deg,#0d100e 0%,#070807 100%) !important;
+  letter-spacing:-.01em;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.65),transparent 78%);
+}
+header{
+  background:rgba(18,22,20,.82) !important;
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.075) !important;
+  padding:1rem 2.25rem !important;
+}
+.logo{gap:.8rem !important;}
+.lm{
+  border-radius:9px !important;
+  padding:.34rem .72rem !important;
+  box-shadow:0 8px 28px rgba(249,195,78,.16);
+}
+.lt{color:rgba(255,255,255,.58) !important;font-weight:500;}
+.nav{
+  top:65px !important;
+  background:rgba(18,22,20,.76) !important;
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.07) !important;
+  box-shadow:none !important;
+  padding:.55rem 2rem !important;
+  gap:.35rem !important;
+  overflow-x:auto;
+}
+.nav::-webkit-scrollbar{height:0;}
+.nb{
+  border:1px solid transparent !important;
+  border-radius:999px !important;
+  padding:.58rem 1rem !important;
+  color:rgba(255,255,255,.46) !important;
+  font-weight:650 !important;
+}
+.nb:hover{background:rgba(255,255,255,.055);color:rgba(255,255,255,.84) !important;}
+.nb.on{
+  background:rgba(249,195,78,.14) !important;
+  border-color:rgba(249,195,78,.25) !important;
+  color:var(--y) !important;
+  box-shadow:inset 0 0 0 1px rgba(249,195,78,.05);
+}
+.page{max-width:1440px !important;padding:2.25rem !important;}
+
+/* Hero global */
+#tab-overview > div:first-child{
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.025)),
+    radial-gradient(circle at 8% 0%,rgba(249,195,78,.16),transparent 28rem),
+    var(--panel-2) !important;
+  border:1px solid rgba(255,255,255,.11) !important;
+  border-radius:var(--radius-lg) !important;
+  box-shadow:var(--shadow) !important;
+  overflow:hidden !important;
+  position:relative;
+}
+#tab-overview > div:first-child::before{
+  content:"";position:absolute;inset:0 0 auto 0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(249,195,78,.55),transparent);
+}
+#tab-overview > div:first-child > div:first-child{
+  padding:2rem 2.25rem !important;
+}
+#tab-overview > div:first-child > div:nth-child(2){
+  background:rgba(0,0,0,.16) !important;
+}
+#hTotal{font-size:2.7rem !important;letter-spacing:-.055em;text-shadow:0 0 34px rgba(249,195,78,.18);}
+#hFactu,#hOkr{font-size:1.75rem !important;letter-spacing:-.035em;}
+#hPalier{font-size:1rem !important;}
+#hBar{box-shadow:0 0 24px rgba(249,195,78,.28);}
+#nudgeBar{
+  background:linear-gradient(135deg,rgba(249,195,78,.12),rgba(249,195,78,.045)) !important;
+  border:1px solid rgba(249,195,78,.24) !important;
+  border-radius:var(--radius-md) !important;
+  box-shadow:var(--soft-shadow);
+}
+
+/* Cards */
+.okr-grid{gap:1.1rem !important;}
+.okr-card,.form-panel,.mini-bar,.item,.empty-msg,.qual-result,.paliers-table .pr{
+  box-shadow:var(--soft-shadow);
+}
+.okr-card,.form-panel,.mini-bar,.item,.empty-msg{
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.035)) !important;
+  border:1px solid rgba(255,255,255,.105) !important;
+  border-radius:var(--radius-md) !important;
+}
+.okr-card{padding:1.25rem !important;position:relative;overflow:hidden;}
+.okr-card::before,.form-panel::before,.mini-bar::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+}
+.okr-lbl,.mini-lbl,.field label{color:rgba(255,255,255,.52) !important;}
+.okr-val{font-size:1.75rem !important;letter-spacing:-.04em;}
+.okr-tgt,.mini-sub,.meta-txt{color:rgba(255,255,255,.43) !important;}
+.okr-bar-bg{height:7px !important;background:rgba(0,0,0,.28) !important;}
+
+/* Entry pages */
+.entry-layout{gap:1.4rem !important;grid-template-columns:minmax(320px,.78fr) 1.4fr !important;}
+.form-panel{padding:1.35rem !important;position:sticky;top:137px;}
+.fp-title,.list-title{font-size:1.02rem !important;letter-spacing:-.025em;}
+.inp{
+  background:rgba(0,0,0,.22) !important;
+  border:1px solid rgba(255,255,255,.105) !important;
+  border-radius:10px !important;
+  padding:.72rem .82rem !important;
+}
+.inp:focus{
+  border-color:rgba(249,195,78,.55) !important;
+  box-shadow:0 0 0 4px rgba(249,195,78,.08);
+}
+.abtn{
+  border-radius:11px !important;
+  padding:.82rem 1rem !important;
+  box-shadow:0 14px 30px rgba(249,195,78,.13);
+  transition:transform .16s ease, opacity .16s ease, box-shadow .16s ease !important;
+}
+.abtn:hover{transform:translateY(-1px);opacity:1 !important;box-shadow:0 18px 36px rgba(249,195,78,.18);}
+.filter-row{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:999px;padding:.18rem;}
+.fb{border-radius:999px !important;border-color:transparent !important;padding:.33rem .68rem !important;}
+.fb.on{box-shadow:0 6px 16px rgba(249,195,78,.13);}
+.items-list{gap:.62rem !important;max-height:620px !important;padding-right:.15rem;}
+.item{padding:1rem 1.05rem !important;transition:transform .16s ease,border-color .16s ease,background .16s ease !important;}
+.item:hover{transform:translateY(-1px);background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.045)) !important;border-color:rgba(249,195,78,.18) !important;}
+.item-name{font-size:.92rem !important;line-height:1.35;}
+.tag,.tag-q,.tag-exp{border-radius:999px !important;padding:.16rem .52rem !important;}
+.del-btn{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.035) !important;}
+.del-btn:hover{background:rgba(239,68,68,.12) !important;}
+.mini-bar{padding:1.05rem 1.25rem !important;position:relative;overflow:hidden;}
+.mini-val{font-size:1.22rem !important;letter-spacing:-.035em;}
+
+/* Qual */
+.qual-layout{
+  max-width:860px !important;
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:var(--radius-lg);
+  padding:1.65rem;
+  box-shadow:var(--shadow);
+}
+.ql-btn{border-radius:999px !important;padding:.56rem 1rem !important;}
+.pr{border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025);}
+
+/* Loading / splash */
+#loadingBar{height:4px !important;box-shadow:0 0 24px rgba(249,195,78,.32);}
+#splash{background:radial-gradient(circle at 50% 35%,rgba(249,195,78,.12),transparent 22rem),#121614 !important;}
+#splash .s-logo{border-radius:12px !important;box-shadow:0 16px 42px rgba(249,195,78,.18);}
+
+@media (max-width:1100px){
+  #tab-overview > div:first-child > div:first-child{grid-template-columns:1fr 1fr !important;gap:1rem !important;}
+  #tab-overview > div:first-child > div:first-child > div[style*="width:1px"]{display:none !important;}
+  #tab-overview > div:first-child > div:first-child > div{padding:0 !important;}
+  #tab-overview > div:first-child > div:nth-child(2){grid-template-columns:1fr !important;}
+  #tab-overview > div:first-child > div:nth-child(2)>div{border-right:0 !important;border-bottom:1px solid rgba(255,255,255,.06);}
+  .okr-grid,.mini-bar{grid-template-columns:repeat(2,1fr) !important;}
+  .entry-layout{grid-template-columns:1fr !important;}
+  .form-panel{position:relative;top:0;}
+}
+@media (max-width:720px){
+  header{padding:.85rem 1rem !important;}
+  .lt{display:none;}
+  .nav{top:57px !important;padding:.5rem 1rem !important;}
+  .page{padding:1.1rem !important;}
+  #hTotal{font-size:2.15rem !important;}
+  #tab-overview > div:first-child > div:first-child,.okr-grid,.mini-bar{grid-template-columns:1fr !important;}
+  .list-header{align-items:flex-start;flex-direction:column;gap:.65rem;}
+  .filter-row{max-width:100%;overflow-x:auto;}
+  .field-row{grid-template-columns:1fr !important;}
+}
+
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="s-logo">Jint</div>
+  <div class="s-dot">Chargement des données...</div>
+</div>
+
+<header>
+  <div class="logo">
+    <div class="lm">Jint</div>
+    <div class="lt">Dashboard Performance 2026 — Antoine Renault</div>
+  </div>
+
+
+</header>
+
+<div id="loadingBar" style="display:none;height:3px;background:linear-gradient(90deg,var(--y) 0%,transparent 100%);animation:loading 1.2s infinite;position:fixed;top:0;left:0;right:0;z-index:999"></div>
+<style>@keyframes loading{0%{background-position:0%}100%{background-position:200%}}
+
+/* Splash screen */
+#splash{
+  position:fixed;inset:0;background:#141817;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:9999;transition:opacity .3s ease;gap:1.25rem;
+}
+#splash.fade{opacity:0;pointer-events:none;}
+#splash .s-logo{
+  background:#F9C34E;color:#141817;
+  font-family:'Geist',sans-serif;font-weight:700;font-size:1.8rem;
+  padding:.4rem 1.1rem;border-radius:8px;letter-spacing:-.02em;
+}
+#splash .s-dot{
+  color:rgba(255,255,255,.6);font-size:.82rem;
+  font-family:'Geist',sans-serif;
+  animation:pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.2}50%{opacity:1}}
+</style>
+<nav class="nav">
+  <div class="nb on" onclick="goTab('overview')">Vue globale</div>
+  <div class="nb" onclick="goTab('projects')">💼 Projets</div>
+  <div class="nb" onclick="goTab('avs')">🤝 Avant-ventes</div>
+  <div class="nb" onclick="goTab('partners')">🎓 Partenaires</div>
+  <div class="nb" onclick="goTab('qual')">⭐ Évaluation</div>
+</nav>
+
+<!-- ═══════════════════ OVERVIEW ═══════════════════ -->
+<div class="page on" id="tab-overview">
+
+  <!-- VARIABLE HERO -->
+  <div style="background:var(--b);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;margin-bottom:1.5rem">
+
+    <!-- Row 1 : chiffres clés -->
+    <div style="display:grid;grid-template-columns:1.4fr 1px 1fr 1px 1fr 1px 1fr;align-items:center;padding:1.6rem 2rem;gap:0">
+      <!-- Variable total -->
+      <div style="padding-right:2rem">
+        <div style="font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:.4rem">Variable estimé 2026</div>
+        <div style="font-size:2.2rem;font-weight:700;color:var(--y);line-height:1" id="hTotal">0 €</div>
+        <div style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:.2rem">sur 20 000 € cible annuelle</div>
+        <div style="height:5px;background:rgba(255,255,255,.08);border-radius:3px;margin-top:.75rem;overflow:hidden"><div id="hBar" style="height:100%;background:var(--y);border-radius:3px;transition:width .6s ease;width:0%"></div></div>
+      </div>
+      <div style="width:1px;height:56px;background:rgba(255,255,255,.08)"></div>
+      <!-- Part facturation -->
+      <div style="padding:0 2rem">
+        <div style="font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:.4rem">Part facturation</div>
+        <div style="font-size:1.5rem;font-weight:700;color:var(--w)" id="hFactu">0 €</div>
+        <div style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:.15rem">sur 15 000 €</div>
+      </div>
+      <div style="width:1px;height:56px;background:rgba(255,255,255,.08)"></div>
+      <!-- Part OKR -->
+      <div style="padding:0 2rem">
+        <div style="font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:.4rem">Part OKR manager</div>
+        <div style="font-size:1.5rem;font-weight:700;color:var(--w)" id="hOkr">0 €</div>
+        <div style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:.15rem">sur 5 000 €</div>
+      </div>
+      <div style="width:1px;height:56px;background:rgba(255,255,255,.08)"></div>
+      <!-- Palier -->
+      <div style="padding-left:2rem">
+        <div style="font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:.4rem">Palier actuel</div>
+        <div style="font-size:.9rem;font-weight:700;color:var(--y);line-height:1.3" id="hPalier">—</div>
+        <div style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:.25rem" id="hBilled">0 € facturés</div>
+      </div>
+    </div>
+
+    <!-- Row 2 : versements S1/S2 + prochain palier -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid rgba(255,255,255,.06)">
+      <div style="padding:1rem 2rem;border-right:1px solid rgba(255,255,255,.06)">
+        <div style="font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.35rem">Versement S1 estimé · juillet 2026</div>
+        <div style="font-size:1.25rem;font-weight:700;color:var(--y)" id="hS1">0 €</div>
+        <div style="font-size:.68rem;color:rgba(255,255,255,.3);margin-top:.15rem">Basé sur facturation jan–juin</div>
+      </div>
+      <div style="padding:1rem 2rem;border-right:1px solid rgba(255,255,255,.06)">
+        <div style="font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.35rem">Versement S2 estimé · janvier 2027</div>
+        <div style="font-size:1.25rem;font-weight:700;color:var(--y)" id="hS2">0 €</div>
+        <div style="font-size:.68rem;color:rgba(255,255,255,.3);margin-top:.15rem">Régularisation annuelle + éval. manager</div>
+      </div>
+      <div style="padding:1rem 2rem;display:flex;align-items:center;gap:.75rem">
+        <div style="flex:1">
+          <div style="font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.35rem">Prochain palier</div>
+          <div style="font-size:.82rem;font-weight:600;color:rgba(255,255,255,.6)" id="hNextPalier">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEXT PALIER NUDGE -->
+  <div id="nudgeBar" style="display:none;background:rgba(249,195,78,.08);border:1px solid rgba(249,195,78,.2);border-radius:10px;padding:.9rem 1.2rem;margin-bottom:1.5rem;align-items:center;justify-content:space-between;gap:1rem">
+    <div style="font-size:.82rem;color:rgba(255,255,255,.7)" id="nudgeText"></div>
+    <div style="font-size:1rem;font-weight:700;color:var(--y);white-space:nowrap" id="nudgeAmount"></div>
+  </div>
+
+  <!-- OKR ANNUEL -->
+  <div style="font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.5);margin-bottom:.75rem">Avancement OKR — Cumul annuel</div>
+  <div class="okr-grid" id="okrGrid"></div>
+
+</div>
+
+<!-- ═══════════════════ PROJETS ═══════════════════ -->
+<div class="page" id="tab-projects">
+  <!-- Mini summary bar -->
+  <div class="mini-bar">
+    <div>
+      <div class="mini-lbl">Facturé (annuel)</div>
+      <div class="mini-val" id="pMBilled">0 €</div>
+      <div class="mini-sub" id="pMPalier">Sous le seuil</div>
+    </div>
+    <div>
+      <div class="mini-lbl">Variable facturation</div>
+      <div class="mini-val" id="pMFactuVar">0 €</div>
+      <div class="mini-sub">sur 15 000 €</div>
+    </div>
+    <div>
+      <div class="mini-lbl">Variable OKR estimé</div>
+      <div class="mini-val" id="pMOkrVar">0 €</div>
+      <div class="mini-sub">sur 5 000 €</div>
+    </div>
+    <div>
+      <div class="mini-lbl">Total variable estimé</div>
+      <div class="mini-val" id="pMTotal">0 €</div>
+      <div class="mini-sub">sur 20 000 €</div>
+    </div>
+  </div>
+  <div class="entry-layout">
+    <div class="form-panel">
+      <div class="fp-title">Ajouter un projet</div>
+      <div class="field">
+        <label>Nom du client / projet</label>
+        <input class="inp" id="pName" placeholder="ex: SNCF — Intranet RH">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Nb de jours</label>
+          <input class="inp" id="pDays" type="number" placeholder="5" min="0.5" step="0.5">
+        </div>
+        <div class="field">
+          <label>Date de la mission</label>
+          <input class="inp" id="pDate" type="date">
+        </div>
+      </div>
+      <div class="field">
+        <label>Montant facturé (€)</label>
+        <input class="inp" id="pAmount" type="number" placeholder="5000">
+      </div>
+      <div class="field">
+        <label>Note client /10 <span style="color:rgba(255,255,255,.35);text-transform:none;font-weight:400">(optionnel — peut être ajoutée plus tard)</span></label>
+        <input class="inp" id="pNote" type="number" placeholder="—" min="0" max="10" step="0.5">
+      </div>
+      <button class="abtn" onclick="addProject()">+ Ajouter le projet</button>
+    </div>
+    <div class="list-panel">
+      <div class="list-header">
+        <div class="list-title">Tous les projets</div>
+        <div class="filter-row" id="pFilter">
+          <button class="fb on" onclick="setPF(0)">Tous</button>
+          <button class="fb" onclick="setPF(1)">Q1</button>
+          <button class="fb" onclick="setPF(2)">Q2</button>
+          <button class="fb" onclick="setPF(3)">Q3</button>
+          <button class="fb" onclick="setPF(4)">Q4</button>
+        </div>
+      </div>
+      <div class="items-list" id="pList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ AVANT-VENTES ═══════════════════ -->
+<div class="page" id="tab-avs">
+  <!-- Mini summary bar -->
+  <div class="mini-bar">
+    <div>
+      <div class="mini-lbl">Facturé (annuel)</div>
+      <div class="mini-val" id="avMBilled">0 €</div>
+      <div class="mini-sub" id="avMPalier">Sous le seuil</div>
+    </div>
+    <div>
+      <div class="mini-lbl">Variable facturation</div>
+      <div class="mini-val" id="avMFactuVar">0 €</div>
+      <div class="mini-sub">sur 15 000 €</div>
+    </div>
+    <div>
+      <div class="mini-lbl">Variable OKR estimé</div>
+      <div class="mini-val" id="avMOkrVar">0 €</div>
+      <div class="mini-sub">sur 5 000 €</div>
+    </div>
+    <div>
+      <div class="mini-lbl">Total variable estimé</div>
+      <div class="mini-val" id="avMTotal">0 €</div>
+      <div class="mini-sub">sur 20 000 €</div>
+    </div>
+  </div>
+  <div class="entry-layout">
+    <div class="form-panel">
+      <div class="fp-title">Ajouter une avant-vente</div>
+      <div class="field">
+        <label>Nom de l'avant-vente / contact</label>
+        <input class="inp" id="avName" placeholder="ex: Jean Dupont — Orange">
+      </div>
+      <div class="field">
+        <label>Client concerné</label>
+        <input class="inp" id="avClient" placeholder="ex: Orange Business">
+      </div>
+      <div class="field">
+        <label>Type d'avant-vente</label>
+        <select class="inp" id="avType">
+          <option value="">Sélectionner un type</option>
+          <option>Proposition d'accompagnement</option>
+          <option>Démo</option>
+          <option>Espace de démo</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Résultat</label>
+        <select class="inp" id="avResult">
+          <option value="En cours">En cours</option>
+          <option value="Succès">Succès ✓</option>
+          <option value="Perdue">Perdue ✗</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Commercial</label>
+          <select class="inp" id="avSales">
+            <option value="">Sélectionner</option>
+            <option>Martin</option>
+            <option>Julien</option>
+            <option>Antoine</option>
+            <option>Victor</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Date</label>
+          <input class="inp" id="avDate" type="date">
+        </div>
+      </div>
+      <button class="abtn" onclick="addAV()">+ Ajouter l'avant-vente</button>
+    </div>
+    <div class="list-panel">
+      <div class="list-header">
+        <div class="list-title">Toutes les avant-ventes</div>
+        <div class="filter-row" id="avFilter">
+          <button class="fb on" onclick="setAVF(0)">Toutes</button>
+          <button class="fb" onclick="setAVF(1)">Q1</button>
+          <button class="fb" onclick="setAVF(2)">Q2</button>
+          <button class="fb" onclick="setAVF(3)">Q3</button>
+          <button class="fb" onclick="setAVF(4)">Q4</button>
+        </div>
+      </div>
+      <div class="items-list" id="avList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ PARTENAIRES ═══════════════════ -->
+<div class="page" id="tab-partners">
+  <!-- Mini summary bar -->
+  <div class="mini-bar">
+    <div>
+      <div class="mini-lbl">Facturé (annuel)</div>
+      <div class="mini-val" id="ptMBilled">0 €</div>
+      <div class="mini-sub" id="ptMPalier">Sous le seuil</div>
+    </div>
+    <div>
+      <div class="mini-lbl">Variable facturation</div>
+      <div class="mini-val" id="ptMFactuVar">0 €</div>
+      <div class="mini-sub">sur 15 000 €</div>
+    </div>
+    <div>
+      <div class="mini-lbl">Variable OKR estimé</div>
+      <div class="mini-val" id="ptMOkrVar">0 €</div>
+      <div class="mini-sub">sur 5 000 €</div>
+    </div>
+    <div>
+      <div class="mini-lbl">Total variable estimé</div>
+      <div class="mini-val" id="ptMTotal">0 €</div>
+      <div class="mini-sub">sur 20 000 €</div>
+    </div>
+  </div>
+  <div class="entry-layout">
+    <div class="form-panel">
+      <div class="fp-title">Ajouter un partenaire certifié</div>
+      <div class="field">
+        <label>Nom du partenaire</label>
+        <input class="inp" id="ptName" placeholder="ex: Accenture France">
+      </div>
+      <div class="field">
+        <label>Type de certification</label>
+        <select class="inp" id="ptType">
+          <option value="">Sélectionner un type</option>
+          <option>Fundamentals</option>
+          <option>Technical</option>
+          <option>Design</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Nom & poste de la personne certifiée</label>
+        <input class="inp" id="ptPerson" placeholder="ex: Sarah Martin — Chef de projet">
+      </div>
+      <div class="field">
+        <label>Date de certification</label>
+        <input class="inp" id="ptDate" type="date">
+      </div>
+      <div class="field" style="display:flex;align-items:center;gap:.6rem;margin-top:.25rem">
+        <input type="checkbox" id="ptNew" style="width:16px;height:16px;accent-color:var(--y);cursor:pointer;flex-shrink:0">
+        <label for="ptNew" style="font-size:.8rem;color:var(--w);text-transform:none;letter-spacing:0;cursor:pointer">
+          ✅ Nouveau partenaire <span style="color:var(--muted);font-size:.72rem">(compté dans l'objectif)</span>
+        </label>
+      </div>
+      <button class="abtn" onclick="addPartner()" style="margin-top:.75rem">+ Ajouter le partenaire</button>
+    </div>
+    <div class="list-panel">
+      <div class="list-header">
+        <div class="list-title">Tous les partenaires</div>
+        <div class="filter-row" id="ptFilter">
+          <button class="fb on" onclick="setPTF(0)">Tous</button>
+          <button class="fb" onclick="setPTF(1)">Q1</button>
+          <button class="fb" onclick="setPTF(2)">Q2</button>
+          <button class="fb" onclick="setPTF(3)">Q3</button>
+          <button class="fb" onclick="setPTF(4)">Q4</button>
+        </div>
+      </div>
+      <div class="items-list" id="ptList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ ÉVALUATION ═══════════════════ -->
+<div class="page" id="tab-qual">
+  <div class="qual-layout">
+    <div style="font-size:1.1rem;font-weight:600;margin-bottom:.4rem">Évaluation qualitative manager</div>
+    <div style="font-size:.82rem;color:var(--muted);line-height:1.6;margin-bottom:1.25rem">
+      Cette part représente <strong style="color:var(--w)">25% de votre variable</strong> soit <strong style="color:var(--w)">5 000 €</strong>.<br>
+      Renseignez votre niveau d'atteinte estimé pour calculer la part variable correspondante.
+    </div>
+
+    <!-- Bloc auto -->
+    <div style="background:rgba(249,195,78,.07);border:1px solid rgba(249,195,78,.15);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.25rem">
+      <div style="font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:.75rem">Estimation automatique — basée sur vos OKR</div>
+      <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
+        <div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-bottom:.2rem">Taux d'atteinte moyen</div>
+          <div style="font-size:1.8rem;font-weight:700;color:var(--y)" id="autoOkrPct">—</div>
+        </div>
+        <div style="width:1px;height:36px;background:rgba(255,255,255,.08)"></div>
+        <div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-bottom:.2rem">Palier correspondant</div>
+          <div style="font-size:.95rem;font-weight:600;color:var(--w)" id="autoPalierLbl">—</div>
+        </div>
+        <div style="width:1px;height:36px;background:rgba(255,255,255,.08)"></div>
+        <div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-bottom:.2rem">Variable OKR estimé</div>
+          <div style="font-size:1.8rem;font-weight:700;color:var(--y)" id="autoOkrVar">0 €</div>
+        </div>
+      </div>
+      <div style="font-size:.65rem;color:rgba(255,255,255,.25);margin-top:.6rem">Moyenne sur 3 OKR mesurables : Montant facturé · Avant-ventes · Partenaires certifiés</div>
+    </div>
+
+    <div style="font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.5rem">Correction manuelle — si votre manager valide un palier différent</div>
+    <div class="qual-btns">
+      <button class="ql-btn" id="ql50"  onclick="setQP(50)">≥ 50%</button>
+      <button class="ql-btn" id="ql80"  onclick="setQP(80)">≥ 80%</button>
+      <button class="ql-btn" id="ql100" onclick="setQP(100)">= 100%</button>
+      <button class="ql-btn" id="ql110" onclick="setQP(110)">≥ 110%</button>
+      <button class="ql-btn" onclick="resetQP()" style="border-color:rgba(239,68,68,.3);color:rgba(239,68,68,.6)">✕ Réinitialiser</button>
+    </div>
+
+    <div class="qual-result" id="qRes">
+      <div class="qual-amt" id="qAmt">0 €</div>
+      <div class="qual-desc" id="qDesc"></div>
+    </div>
+
+    <div style="font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:1.5rem;margin-bottom:.5rem">Barème de rémunération</div>
+    <div class="paliers-table">
+      <div class="pr" id="pr110"><span>≥ 110% de l'objectif</span><strong>5 500 €</strong></div>
+      <div class="pr" id="pr100"><span>= 100% de l'objectif</span><strong>5 000 €</strong></div>
+      <div class="pr" id="pr80"><span>≥ 80% de l'objectif</span><strong>4 000 €</strong></div>
+      <div class="pr" id="pr50"><span>≥ 50% de l'objectif</span><strong>2 000 €</strong></div>
+      <div class="pr" id="pr0"><span>&lt; 50% de l'objectif</span><strong>0 €</strong></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const dateToQ=d=>{if(!d)return 1;const m=new Date(d+'T12:00:00').getMonth();return m<3?1:m<6?2:m<9?3:4;};
+const VAR_T=20000,VAR_F=15000,VAR_O=5000;
+const AV_TGT=[1,2,1,3],PT_TGT=[13,13,13,13]; // 13 nouveaux partenaires à former sur l'année
+const PALS=[
+  {min:0,     pct:0,  lbl:"Sous le seuil (< 40k€)"},
+  {min:40000, pct:40, lbl:"Palier 40% · 40–60k€"},
+  {min:60000, pct:60, lbl:"Palier 60% · 60–80k€"},
+  {min:80000, pct:80, lbl:"Palier 80% · 80–110k€"},
+  {min:110000,pct:100,lbl:"Palier 100% ✓"},
+  {min:120000,pct:120,lbl:"Sur-perf 120%"},
+  {min:131000,pct:130,lbl:"Sur-perf 130%"},
+  {min:143000,pct:140,lbl:"Sur-perf 140%"},
+];
+const QPALS={110:{m:1.1,l:"Atteinte ≥ 110% → 110% du variable"},100:{m:1.0,l:"Atteinte = 100% → 100% du variable"},80:{m:0.8,l:"Atteinte ≥ 80% → 80% du variable"},50:{m:0.4,l:"Atteinte ≥ 50% → 40% du variable"}};
+
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyuHddACkhRGd1E6mJ-omS9rK2ItHYhj5Rb4umD-hYd0UrwBAEAgyH5OXnvBssW0A/exec';
+
+let projects=[], avs=[], parts=[], qp=0;
+let Q=1,pF=0,avF=0,ptF=0;
+let loading=false;
+
+async function gsRead(sheet) {
+  const res = await fetch(`${SCRIPT_URL}?action=read&sheet=${sheet}`);
+  const data = await res.json();
+  return data.data || [];
+}
+
+async function gsWrite(sheet, row) {
+  if (!row || row.length === 0) return;
+  const params = new URLSearchParams({ action: 'write', sheet, row: JSON.stringify(row) });
+  await fetch(`${SCRIPT_URL}?${params}`).catch(e => console.error('gsWrite error:', e));
+}
+
+async function gsDelete(sheet, id) {
+  await fetch(`${SCRIPT_URL}?action=delete&sheet=${sheet}&id=${id}`).catch(e => console.error('gsDelete error:', e));
+}
+
+async function gsUpdate(sheet, id, col, value) {
+  await fetch(`${SCRIPT_URL}?action=update&sheet=${sheet}&id=${id}&col=${encodeURIComponent(col)}&value=${encodeURIComponent(value)}`).catch(e => console.error('gsUpdate error:', e));
+}
+
+function showLoading(on) {
+  loading = on;
+  const el = document.getElementById('loadingBar');
+  if(el) el.style.display = on ? 'block' : 'none';
+}
+
+async function loadAllData() {
+  showLoading(true);
+  try {
+    const [pData, avData, ptData] = await Promise.all([
+      gsRead('Projets'), gsRead('AvantVentes'), gsRead('Partenaires')
+    ]);
+    projects = pData.map(r => ({ id: r.ID, n: r.Client, d: parseFloat(r.Jours)||0, a: parseFloat(r.Montant)||0, q: parseInt(r.Trimestre)||1, dt: r.Date, note: r.Note||'' }));
+    avs      = avData.map(r => ({ id: r.ID, n: r.Nom, cl: r.Client, t: r.Type, s: r.Commercial, q: parseInt(r.Trimestre)||1, dt: r.Date, r: r.Resultat||'En cours' }));
+    parts    = ptData.map(r => ({ id: r.ID, n: r.NomPartenaire, person: r.Personne, t: r.Type, q: parseInt(r.Trimestre)||1, d: r.Date, e: r.DateExpiration, isNew: r.NouveauPartenaire==='true'||r.NouveauPartenaire===true }));
+    qp       = parseInt(localStorage.getItem('jd_qp')||'0');
+  } catch(e) { console.error('Erreur chargement:', e); }
+  
+  setTimeout(() => {
+    const splash = document.getElementById('splash');
+    if(splash) { splash.classList.add('fade'); setTimeout(()=>splash.remove(), 250); }
+    showLoading(false);
+  }, 300);
+  render();
+}
+
+
+
+const sv=()=>{ localStorage.setItem('jd_qp', qp); };const fmt=n=>new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
+const parseDate=d=>{if(!d)return null;const s=String(d).trim();if(/^\d{4}-\d{2}-\d{2}$/.test(s))return new Date(s+'T12:00:00');const dt=new Date(s);return isNaN(dt)?null:dt;};
+const fmtD=d=>{const dt=parseDate(d);return dt?dt.toLocaleDateString('fr-FR'):'';}; 
+const addYr=d=>{const dt=parseDate(d);if(!dt)return'';dt.setFullYear(dt.getFullYear()+1);return dt.toISOString().split('T')[0];};
+const getPal=t=>{let r=PALS[0];for(const p of PALS)if(t>=p.min)r=p;return r;};
+const getSt=p=>{if(p>=100)return{c:'sg',l:'On track ✓'};if(p>=80)return{c:'sy',l:'Attention'};if(p>=50)return{c:'so',l:'À risque'};return{c:'sr',l:'En retard'};};
+const getClr=p=>{if(p>=100)return'#22c55e';if(p>=80)return'#F9C34E';if(p>=50)return'#f97316';return'#ef4444';};
+const g=id=>document.getElementById(id);
+
+// TABS
+function goTab(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  g('tab-'+id).classList.add('on');
+  event.target.classList.add('on');
+}
+
+// Quarter handled per-entry via date
+
+// FILTERS
+function setPF(f){pF=f;g('pFilter').querySelectorAll('.fb').forEach((b,i)=>b.classList.toggle('on',i===f));renderPList();}
+function setAVF(f){avF=f;g('avFilter').querySelectorAll('.fb').forEach((b,i)=>b.classList.toggle('on',i===f));renderAVList();}
+function setPTF(f){ptF=f;g('ptFilter').querySelectorAll('.fb').forEach((b,i)=>b.classList.toggle('on',i===f));renderPTList();}
+
+// ADD
+async function addProject(){
+  const n=g('pName').value.trim(),d=parseFloat(g('pDays').value),a=parseFloat(g('pAmount').value),dt=g('pDate').value,note=g('pNote').value;
+  if(!n||isNaN(a))return;
+  const q=dateToQ(dt);
+  const id=Date.now();
+  projects.push({id,n,d:isNaN(d)?0:d,a,q,dt,note:note||''});
+  g('pName').value='';g('pDays').value='';g('pAmount').value='';g('pDate').value='';g('pNote').value='';
+  render();
+  await gsWrite('Projets',[id,dt,n,isNaN(d)?0:d,a,q,note||'']);
+}
+async function addAV(){
+  const n=g('avName').value.trim(),cl=g('avClient').value.trim(),t=g('avType').value,s=g('avSales').value,dt=g('avDate').value,r=g('avResult').value||'En cours';
+  if(!n||!t)return;
+  const q=dateToQ(dt);
+  const id=Date.now();
+  avs.push({id,n,cl,t,s,q,dt,r});
+  g('avName').value='';g('avClient').value='';g('avType').value='';g('avSales').value='';g('avDate').value='';g('avResult').value='En cours';
+  render();
+  await gsWrite('AvantVentes',[id,dt,n,cl,t,s,q,r]);
+}
+async function addPartner(){
+  const n=g('ptName').value.trim(),person=g('ptPerson').value.trim(),t=g('ptType').value,d=g('ptDate').value,isNew=g('ptNew').checked;
+  if(!n||!t)return;
+  const q=dateToQ(d);
+  const id=Date.now();
+  parts.push({id,n,person,t,q,d,e:addYr(d),isNew});
+  g('ptName').value='';g('ptPerson').value='';g('ptType').value='';g('ptDate').value='';g('ptNew').checked=false;
+  render();
+  await gsWrite('Partenaires',[id,d,n,person,t,q,addYr(d),isNew]);
+}
+
+// DELETE
+async function delP(id){projects=projects.filter(x=>x.id!==id);render();await gsDelete('Projets',id);}
+
+async function updateProjectNote(id, newNote){
+  const p = projects.find(x=>String(x.id)===String(id));
+  if(!p) return;
+  p.note = newNote;
+  render();
+  await gsUpdate('Projets', String(id), 'Note', newNote);
+}
+async function delAV(id){avs=avs.filter(x=>x.id!==id);render();await gsDelete('AvantVentes',id);}
+
+async function updateAVResult(id, newResult){
+  const av = avs.find(a=>String(a.id)===String(id));
+  if(!av) return;
+  av.r = newResult;
+  render();
+  await gsUpdate('AvantVentes', String(id), 'Resultat', newResult);
+}
+async function delPT(id){parts=parts.filter(x=>x.id!==id);render();await gsDelete('Partenaires',id);}
+
+// RENDER LISTS
+function renderPList(){
+  const filtered=(pF?projects.filter(p=>p.q===pF):projects).slice().sort((a,b)=>String(b.id).localeCompare(String(a.id)));
+  const el=g('pList');
+  el.innerHTML=filtered.length?filtered.map(p=>`
+    <div class="item">
+      <div class="item-body">
+        <div class="item-name">${p.n}</div>
+        <div class="item-meta">
+          <span class="tag-q">Q${p.q}</span>
+          ${p.dt?`<span class="meta-txt">${fmtD(p.dt)}</span>`:''}
+          ${p.d?`<span class="meta-txt">${p.d} j</span>`:''}
+          <span class="amount-txt">${fmt(p.a)}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.5rem;margin-top:.4rem">
+          <span style="font-size:.65rem;color:rgba(255,255,255,.4)">Note client :</span>
+          <input type="number" min="0" max="10" step="0.5" value="${p.note||''}" placeholder="—"
+            style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:'Geist',sans-serif;font-size:.75rem;font-weight:600;padding:.2rem .4rem;border-radius:4px;width:55px;outline:none"
+            onchange="updateProjectNote(${p.id}, this.value)"
+            onfocus="this.style.borderColor='rgba(249,195,78,.4)'"
+            onblur="this.style.borderColor='rgba(255,255,255,.1)'">
+          <span style="font-size:.65rem;color:rgba(255,255,255,.35)">/10</span>
+          ${p.note?`<span style="background:rgba(249,195,78,.15);color:var(--y);font-size:.65rem;font-weight:600;padding:.1rem .4rem;border-radius:4px">${p.note}/10</span>`:''}
+        </div>
+      </div>
+      <button class="del-btn" onclick="delP(${p.id})">✕</button>
+    </div>`).join(''):'<div class="empty-msg">Aucun projet enregistré</div>';
+}
+
+function renderAVList(){
+  const filtered=(avF?avs.filter(a=>a.q===avF):avs).slice().sort((a,b)=>String(b.id).localeCompare(String(a.id)));
+  const el=g('avList');
+  el.innerHTML=filtered.length?filtered.map(a=>{
+    const rClr = a.r==='Succès' ? 'rgba(34,197,94,.15)' : a.r==='Perdue' ? 'rgba(239,68,68,.15)' : 'rgba(255,255,255,.07)';
+    const rTxt = a.r==='Succès' ? '#22c55e' : a.r==='Perdue' ? '#ef4444' : 'rgba(255,255,255,.4)';
+    return `<div class="item">
+      <div class="item-body">
+        <div class="item-name">${a.n}</div>
+        <div class="item-meta">
+          <span class="tag-q">Q${a.q}</span>
+          ${a.dt?`<span class="meta-txt">${fmtD(a.dt)}</span>`:''}
+          <span class="tag">${a.t}</span>
+          ${a.cl?`<span class="meta-txt">${a.cl}</span>`:''}
+          ${a.s?`<span class="meta-txt">👤 ${a.s}</span>`:''}
+          <div style="display:flex;gap:.25rem">
+            <div style="display:flex;gap:.3rem;margin-top:.35rem">
+              <button onclick="updateAVResult(${a.id},'En cours')" style="background:${a.r==='En cours'?'rgba(255,255,255,.2)':'transparent'};color:${a.r==='En cours'?'#fff':'rgba(255,255,255,.35)'};border:1px solid ${a.r==='En cours'?'rgba(255,255,255,.5)':'rgba(255,255,255,.15)'};font-family:'Geist',sans-serif;font-size:.65rem;font-weight:${a.r==='En cours'?'700':'400'};padding:.2rem .55rem;border-radius:4px;cursor:pointer">⏳ En cours</button>
+              <button onclick="updateAVResult(${a.id},'Succès')" style="background:${a.r==='Succès'?'#22c55e':'transparent'};color:${a.r==='Succès'?'#fff':'rgba(34,197,94,.5)'};border:1px solid ${a.r==='Succès'?'#22c55e':'rgba(34,197,94,.25)'};font-family:'Geist',sans-serif;font-size:.65rem;font-weight:${a.r==='Succès'?'700':'400'};padding:.2rem .55rem;border-radius:4px;cursor:pointer">✓ Succès</button>
+              <button onclick="updateAVResult(${a.id},'Perdue')" style="background:${a.r==='Perdue'?'#ef4444':'transparent'};color:${a.r==='Perdue'?'#fff':'rgba(239,68,68,.5)'};border:1px solid ${a.r==='Perdue'?'#ef4444':'rgba(239,68,68,.25)'};font-family:'Geist',sans-serif;font-size:.65rem;font-weight:${a.r==='Perdue'?'700':'400'};padding:.2rem .55rem;border-radius:4px;cursor:pointer">✗ Perdue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="del-btn" onclick="delAV(${a.id})">✕</button>
+    </div>`;
+  }).join(''):'<div class="empty-msg">Aucune avant-vente enregistrée</div>';
+}
+
+function renderPTList(){
+  const filtered=(ptF?parts.filter(p=>p.q===ptF):parts).slice().sort((a,b)=>String(b.id).localeCompare(String(a.id)));
+  const el=g('ptList');
+  el.innerHTML=filtered.length?filtered.map(p=>`
+    <div class="item">
+      <div class="item-body">
+        <div class="item-name">${p.n} ${p.isNew?'<span class="tag" style="background:rgba(34,197,94,.15);color:#22c55e">Nouveau ✓</span>':''}</div>
+        <div class="item-meta">
+          <span class="tag-q">Q${p.q}</span>
+          <span class="tag">${p.t}</span>
+          ${p.person?`<span class="meta-txt">${p.person}</span>`:''}
+          ${p.d?`<span class="meta-txt">Certif. ${fmtD(p.d)}</span>`:''}
+          ${p.e?`<span class="tag-exp">Exp. ${fmtD(p.e)}</span>`:''}
+        </div>
+      </div>
+      <button class="del-btn" onclick="delPT(${p.id})">✕</button>
+    </div>`).join(''):'<div class="empty-msg">Aucun partenaire enregistré</div>';
+}
+
+// OVERVIEW
+function renderOverview(){
+  const total=projects.reduce((s,p)=>s+p.a,0);
+  const pal=getPal(total);
+  const fv=Math.round(VAR_F*pal.pct/100);
+  const qpalObj=QPALS[qp];const ov=qpalObj?Math.round(VAR_O*qpalObj.m):0;
+  const tv=fv+ov;
+
+  // Hero
+  g('hFactu').textContent=fmt(fv);
+  g('hPalier').textContent=pal.lbl;
+  g('hBilled').textContent=fmt(total)+' facturés';
+
+  // S1/S2 estimates
+  const s1Total = projects.filter(p=>p.q===1||p.q===2).reduce((s,p)=>s+p.a,0);
+  const s1Pal = getPal(s1Total);
+  const s1Var = Math.round(VAR_F * s1Pal.pct / 100);
+  g('hS1').textContent = fmt(s1Var);
+
+  const s2Var = Math.max(0, tv - s1Var);
+
+  // KPIs
+  const avSuccess=avs.filter(a=>a.r==='Succès').length;
+  const avTgt=AV_TGT.reduce((s,v)=>s+v,0);
+  const ptT=parts.filter(p=>p.isNew).length,ptTgt=PT_TGT[3];
+  const avPct=avTgt?Math.round((avs.length/avTgt)*100):0;
+  const ptPct=ptTgt?Math.round((ptT/ptTgt)*100):0;
+  const tvPct=Math.round((tv/VAR_T)*100);
+
+  // KPI cards removed - info shown in OKR grid below
+
+  // Annual OKR — compute autoOkrVar FIRST before using it
+  const annualBilledK = Math.round(total/1000);
+  const annualAvTgt = AV_TGT.reduce((s,v)=>s+v,0);
+  const annualPtTgt = PT_TGT[3];
+  const billedPct  = Math.round((annualBilledK / 110) * 100);
+  const avPctCalc  = Math.round((avSuccess / annualAvTgt) * 100);
+  const ptPctCalc  = Math.round((ptT / annualPtTgt) * 100);
+  const avgPct     = Math.round((billedPct + avPctCalc + ptPctCalc) / 3);
+  let autoPalier = 0, autoPalierLbl = '< 50% — 0 €';
+  if (avgPct >= 110)      { autoPalier = 110; autoPalierLbl = '≥ 110% → 5 500 €'; }
+  else if (avgPct >= 100) { autoPalier = 100; autoPalierLbl = '= 100% → 5 000 €'; }
+  else if (avgPct >= 80)  { autoPalier = 80;  autoPalierLbl = '≥ 80% → 4 000 €'; }
+  else if (avgPct >= 50)  { autoPalier = 50;  autoPalierLbl = '≥ 50% → 2 000 €'; }
+  const autoOkrVar = autoPalier ? Math.round(VAR_O * QPALS[autoPalier].m) : 0;
+
+  // Update mini bars on all tabs
+  const effectiveOv = qp ? Math.round(VAR_O * QPALS[qp].m) : autoOkrVar;
+  const effectiveTotal = fv + effectiveOv;
+  ['p','av','pt'].forEach(prefix => {
+    const mb = document.getElementById(prefix+'MBilled'); if(mb) mb.textContent = fmt(total);
+    const mp = document.getElementById(prefix+'MPalier'); if(mp) mp.textContent = pal.lbl;
+    const mf = document.getElementById(prefix+'MFactuVar'); if(mf) mf.textContent = fmt(fv);
+    const mo = document.getElementById(prefix+'MOkrVar'); if(mo) mo.textContent = fmt(effectiveOv);
+    const mt = document.getElementById(prefix+'MTotal'); if(mt) mt.textContent = fmt(effectiveTotal);
+  });
+
+  // OKR grid
+  // Next palier nudge
+  const nextPal = PALS.find(p => p.min > total);
+  if(nextPal) {
+    const diff = nextPal.min - total;
+    g('nudgeBar').style.display = 'flex';
+    g('nudgeText').textContent = `Il vous manque ${fmt(diff)} pour atteindre le palier suivant (${nextPal.pct}% du variable)`;
+    g('nudgeAmount').textContent = `→ ${fmt(Math.round(VAR_F * nextPal.pct / 100))} de variable facturation`;
+    g('hNextPalier').textContent = `Prochain palier : +${fmt(diff)}`;
+  } else {
+    g('nudgeBar').style.display = 'none';
+    g('hNextPalier').textContent = 'Plafond maximum atteint 🎉';
+  }
+
+  // Annual OKR targets
+  const billedK = annualBilledK;
+
+  // Update qual tab display
+  const autoEl = document.getElementById('autoOkrPct');
+  const autoPalEl = document.getElementById('autoPalierLbl');
+  const autoVarEl = document.getElementById('autoOkrVar');
+  if(autoEl) autoEl.textContent = avgPct + '%';
+  if(autoPalEl) autoPalEl.textContent = autoPalierLbl;
+  if(autoVarEl) autoVarEl.textContent = fmt(autoOkrVar);
+
+  // Use auto value in hero if no manual override
+  const effectiveOkrVar = qp ? ov : autoOkrVar;
+  const effectiveTv = fv + effectiveOkrVar;
+  g('hTotal').textContent = fmt(effectiveTv);
+  g('hBar').style.width = Math.min((effectiveTv/VAR_T)*100,140)+'%';
+  g('hOkr').textContent = fmt(effectiveOkrVar);
+  const s2VarEff = Math.max(0, effectiveTv - s1Var);
+  g('hS2').textContent = fmt(s2VarEff);
+  const okrs=[
+    {l:"Montant facturé (annuel)",u:"k€",v:billedK,t:110},
+    {l:"Avant-ventes réussies (annuel)",u:"",v:avSuccess,t:annualAvTgt},
+    {l:"Nouveaux partenaires (annuel)",u:"",v:ptT,t:annualPtTgt},
+    {l:"Note de satisfaction",u:"/10",v:(()=>{const noted=projects.filter(p=>p.note&&!isNaN(parseFloat(p.note)));return noted.length?Math.round((noted.reduce((s,p)=>s+parseFloat(p.note),0)/noted.length)*10)/10:null;})(),t:8,manual:false},
+  ];
+  g('okrGrid').innerHTML=okrs.map(o=>{
+    const pct=o.v!==null?Math.min(Math.round((o.v/o.t)*100),140):0;
+    const clr=o.v!==null?getClr(pct):'rgba(255,255,255,.15)';
+    const st=o.v!==null?getSt(pct):null;
+    return`<div class="okr-card">
+      <div class="okr-lbl">Annuel · ${o.l}</div>
+      <div class="okr-val">${o.v!==null?o.v+o.u:'—'}</div>
+      <div class="okr-tgt">Cible : ${o.t}${o.u}</div>
+      <div class="okr-bar-bg"><div class="okr-bar" style="width:${Math.min(pct,100)}%;background:${clr}"></div></div>
+      ${o.v!==null?`<div class="okr-pct" style="color:${clr}">${pct}%</div>`:''}
+      ${st?`<div class="sb ${st.c}"><div class="sd"></div>${st.l}</div>`:''}
+      ${(!o.v&&o.v!==0)?'<div class="okr-manual">Aucune note renseignée</div>':''}
+    </div>`;
+  }).join('');
+}
+
+async function resetAllData(){
+  if(!confirm('Supprimer toutes les données ? Cette action est irréversible.')) return;
+  projects=[];avs=[];parts=[];qp=0;
+  localStorage.removeItem('jd_qp');
+  render();
+  await Promise.all([
+    gsDelete('Projets','all'),
+    gsDelete('AvantVentes','all'),
+    gsDelete('Partenaires','all'),
+  ]);
+  loadAllData();
+}
+
+// QUAL
+function resetQP(){
+  qp=0;sv();
+  document.querySelectorAll('.ql-btn').forEach(b=>b.classList.remove('on'));
+  g('qRes').style.display='none';
+  ['pr110','pr100','pr80','pr50','pr0'].forEach(id=>g(id).classList.remove('ap'));
+  renderOverview();
+}
+
+function setQP(pct){
+  qp=pct;sv();
+  document.querySelectorAll('.ql-btn').forEach(b=>b.classList.remove('on'));
+  g(`ql${pct}`).classList.add('on');
+  const p=QPALS[pct];const amt=Math.round(VAR_O*p.m);
+  g('qRes').style.display='block';g('qAmt').textContent=fmt(amt);g('qDesc').textContent=p.l;
+  ['pr110','pr100','pr80','pr50','pr0'].forEach(id=>g(id).classList.remove('ap'));
+  const mp={110:'pr110',100:'pr100',80:'pr80',50:'pr50'};if(mp[pct])g(mp[pct]).classList.add('ap');
+  renderOverview();
+}
+
+function render(){renderOverview();renderPList();renderAVList();renderPTList();}
+
+// RESTORE QUAL
+if(qp&&QPALS[qp]){
+  const b=g(`ql${qp}`);if(b)b.classList.add('on');
+  const p=QPALS[qp];g('qRes').style.display='block';
+  g('qAmt').textContent=fmt(Math.round(VAR_O*p.m));g('qDesc').textContent=p.l;
+  const mp={110:'pr110',100:'pr100',80:'pr80',50:'pr50'};if(mp[qp])g(mp[qp]).classList.add('ap');
+}
+
+loadAllData();
+</script>
+</body>
+</html>
