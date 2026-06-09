@@ -334,6 +334,45 @@ header{
   .field-row{grid-template-columns:1fr !important;}
 }
 
+
+/* ── MANAGER SUMMARY ── */
+.manager-wrap{display:flex;flex-direction:column;gap:1.25rem;}
+.manager-head{background:linear-gradient(135deg,rgba(249,195,78,.16),rgba(255,255,255,.035));border:1px solid rgba(249,195,78,.2);border-radius:18px;padding:1.5rem 1.7rem;display:flex;justify-content:space-between;gap:1.5rem;align-items:flex-start;box-shadow:0 20px 70px rgba(0,0,0,.22);}
+.manager-kicker{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(249,195,78,.82);margin-bottom:.45rem;}
+.manager-title{font-size:1.45rem;font-weight:700;letter-spacing:-.03em;margin-bottom:.35rem;}
+.manager-sub{font-size:.82rem;color:rgba(255,255,255,.58);line-height:1.55;max-width:760px;}
+.manager-actions{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:flex-end;}
+.ghost-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);color:rgba(255,255,255,.76);font-family:'Geist',sans-serif;font-size:.74rem;font-weight:700;padding:.55rem .8rem;border-radius:10px;cursor:pointer;transition:all .16s;white-space:nowrap;}
+.ghost-btn:hover{background:rgba(255,255,255,.1);border-color:rgba(249,195,78,.28);color:#fff;transform:translateY(-1px);}
+.manager-hero{display:grid;grid-template-columns:1.3fr repeat(3,1fr);gap:1rem;}
+.m-card{background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.085);border-radius:16px;padding:1.15rem;min-height:126px;box-shadow:0 18px 55px rgba(0,0,0,.18);}
+.m-card.primary{background:linear-gradient(135deg,rgba(249,195,78,.96),rgba(249,195,78,.72));color:var(--b);border-color:rgba(249,195,78,.6);}
+.m-lbl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.45);margin-bottom:.45rem;}
+.m-card.primary .m-lbl{color:rgba(20,24,23,.55);}
+.m-val{font-size:1.75rem;font-weight:800;letter-spacing:-.04em;line-height:1.05;color:#fff;}
+.m-card.primary .m-val{font-size:2.15rem;color:var(--b);}
+.m-note{font-size:.72rem;color:rgba(255,255,255,.44);line-height:1.45;margin-top:.45rem;}
+.m-card.primary .m-note{color:rgba(20,24,23,.64);font-weight:600;}
+.manager-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start;}
+.manager-section{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.075);border-radius:16px;padding:1.2rem;}
+.manager-section-title{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,.72);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+.contribution-list,.lever-list{display:flex;flex-direction:column;gap:.65rem;}
+.contribution-row{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;padding:.75rem .85rem;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.055);}
+.c-title{font-size:.82rem;font-weight:700;color:rgba(255,255,255,.86);}
+.c-sub{font-size:.68rem;color:rgba(255,255,255,.38);margin-top:.2rem;}
+.c-val{font-size:.92rem;font-weight:800;color:var(--y);white-space:nowrap;}
+.lever{padding:.85rem .95rem;border-radius:13px;background:rgba(249,195,78,.07);border:1px solid rgba(249,195,78,.16);}
+.lever strong{color:var(--y);font-weight:800;}
+.lever-title{font-size:.84rem;font-weight:800;color:rgba(255,255,255,.88);margin-bottom:.22rem;}
+.lever-desc{font-size:.72rem;color:rgba(255,255,255,.52);line-height:1.45;}
+.manager-timeline{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:center;}
+.timeline-box{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:1rem;}
+.timeline-arrow{color:var(--y);font-weight:900;font-size:1.5rem;}
+.extract-box{background:#f6f1e6;color:#141817;border-radius:16px;padding:1.25rem;border:1px solid rgba(249,195,78,.25);}
+.extract-box pre{white-space:pre-wrap;font-family:'Geist',sans-serif;font-size:.78rem;line-height:1.55;color:#141817;}
+@media(max-width:980px){.manager-head{flex-direction:column}.manager-actions{justify-content:flex-start}.manager-hero,.manager-grid,.manager-timeline{grid-template-columns:1fr}.timeline-arrow{display:none}}
+@media print{body{background:#fff;color:#111}.nav,header,#loadingBar,#splash,.manager-actions{display:none!important}.page{display:none!important}.page.printing{display:block!important;max-width:none;padding:0}.manager-head,.m-card,.manager-section,.extract-box{box-shadow:none!important}.manager-wrap{gap:14px}.manager-head,.m-card,.manager-section{border-color:#ddd!important;background:#fff!important;color:#111!important}.m-lbl,.m-note,.manager-sub,.c-sub,.lever-desc{color:#555!important}.m-val,.c-title,.manager-title,.manager-section-title{color:#111!important}.c-val,.lever strong{color:#8a640f!important}.extract-box{background:#fff!important;border:1px solid #ddd!important}}
+
 </style>
 </head>
 <body>
@@ -380,6 +419,7 @@ header{
   <div class="nb" onclick="goTab('avs')">🤝 Avant-ventes</div>
   <div class="nb" onclick="goTab('partners')">🎓 Partenaires</div>
   <div class="nb" onclick="goTab('qual')">⭐ Évaluation</div>
+  <div class="nb" onclick="goTab('manager')">📄 Synthèse manager</div>
 </nav>
 
 <!-- ═══════════════════ OVERVIEW ═══════════════════ -->
@@ -681,6 +721,80 @@ header{
   </div>
 </div>
 
+
+<!-- ═══════════════════ SYNTHÈSE MANAGER ═══════════════════ -->
+<div class="page" id="tab-manager">
+  <div class="manager-wrap" id="managerPrintArea">
+    <div class="manager-head">
+      <div>
+        <div class="manager-kicker">Extract · Revue manager</div>
+        <div class="manager-title">Synthèse performance 2026</div>
+        <div class="manager-sub">Vue de lecture seule générée à partir des données déjà synchronisées. Aucun impact sur Google Sheets, aucun enregistrement, aucune modification API.</div>
+      </div>
+      <div class="manager-actions">
+        <button class="ghost-btn" onclick="copyManagerExtract()">Copier l'extract</button>
+        <button class="ghost-btn" onclick="downloadManagerExtract()">Télécharger .txt</button>
+        <button class="ghost-btn" onclick="printManagerExtract()">Exporter PDF</button>
+      </div>
+    </div>
+
+    <div class="manager-hero">
+      <div class="m-card primary">
+        <div class="m-lbl">Statut global</div>
+        <div class="m-val" id="mStatus">—</div>
+        <div class="m-note" id="mStatusNote">—</div>
+      </div>
+      <div class="m-card">
+        <div class="m-lbl">Variable estimée</div>
+        <div class="m-val" id="mTotalVar">0 €</div>
+        <div class="m-note">Sur 20 000 € cible annuelle</div>
+      </div>
+      <div class="m-card">
+        <div class="m-lbl">Facturé annuel</div>
+        <div class="m-val" id="mBilled">0 €</div>
+        <div class="m-note" id="mPalier">—</div>
+      </div>
+      <div class="m-card">
+        <div class="m-lbl">Projection fin d'année</div>
+        <div class="m-val" id="mProjection">0 €</div>
+        <div class="m-note" id="mProjectionNote">Basée sur le rythme actuel</div>
+      </div>
+    </div>
+
+    <div class="manager-grid">
+      <div class="manager-section">
+        <div class="manager-section-title">📊 Ce qui contribue à la performance</div>
+        <div class="contribution-list" id="mContrib"></div>
+      </div>
+      <div class="manager-section">
+        <div class="manager-section-title">🎯 Leviers prioritaires</div>
+        <div class="lever-list" id="mLevers"></div>
+      </div>
+    </div>
+
+    <div class="manager-section">
+      <div class="manager-section-title">🗓️ Lecture S1 → S2</div>
+      <div class="manager-timeline">
+        <div class="timeline-box">
+          <div class="m-lbl">Versement S1 estimé</div>
+          <div class="m-val" id="mS1">0 €</div>
+          <div class="m-note">Basé sur la facturation Q1 + Q2</div>
+        </div>
+        <div class="timeline-arrow">→</div>
+        <div class="timeline-box">
+          <div class="m-lbl">Versement S2 estimé</div>
+          <div class="m-val" id="mS2">0 €</div>
+          <div class="m-note">Régularisation annuelle + part OKR</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="extract-box">
+      <pre id="managerExtractText">Chargement de la synthèse...</pre>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════ ÉVALUATION ═══════════════════ -->
 <div class="page" id="tab-qual">
   <div class="qual-layout">
@@ -755,12 +869,29 @@ const QPALS={110:{m:1.1,l:"Atteinte ≥ 110% → 110% du variable"},100:{m:1.0,l
 
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyuHddACkhRGd1E6mJ-omS9rK2ItHYhj5Rb4umD-hYd0UrwBAEAgyH5OXnvBssW0A/exec';
 
+// HARD FAILSAFE — never let the splash screen block the dashboard.
+function removeSplashSafe(){
+  const splash=document.getElementById('splash');
+  if(splash){splash.classList.add('fade'); setTimeout(()=>{ try{splash.remove();}catch(e){} },250);}
+  const lb=document.getElementById('loadingBar'); if(lb) lb.style.display='none';
+}
+window.addEventListener('error', e => { console.error('Erreur JS interceptée:', e.error || e.message); removeSplashSafe(); });
+window.addEventListener('unhandledrejection', e => { console.error('Promise rejetée:', e.reason); removeSplashSafe(); });
+setTimeout(removeSplashSafe, 4500);
+
+async function withTimeout(promise, ms=7000){
+  return Promise.race([
+    promise,
+    new Promise((_, reject)=>setTimeout(()=>reject(new Error('Timeout Google Sheets')), ms))
+  ]);
+}
+
 let projects=[], avs=[], parts=[], qp=0;
 let Q=1,pF=0,avF=0,ptF=0;
 let loading=false;
 
 async function gsRead(sheet) {
-  const res = await fetch(`${SCRIPT_URL}?action=read&sheet=${sheet}`);
+  const res = await withTimeout(fetch(`${SCRIPT_URL}?action=read&sheet=${sheet}`), 7000);
   const data = await res.json();
   return data.data || [];
 }
@@ -788,21 +919,24 @@ function showLoading(on) {
 async function loadAllData() {
   showLoading(true);
   try {
-    const [pData, avData, ptData] = await Promise.all([
+    const [pData, avData, ptData] = await withTimeout(Promise.all([
       gsRead('Projets'), gsRead('AvantVentes'), gsRead('Partenaires')
-    ]);
-    projects = pData.map(r => ({ id: r.ID, n: r.Client, d: parseFloat(r.Jours)||0, a: parseFloat(r.Montant)||0, q: parseInt(r.Trimestre)||1, dt: r.Date, note: r.Note||'' }));
-    avs      = avData.map(r => ({ id: r.ID, n: r.Nom, cl: r.Client, t: r.Type, s: r.Commercial, q: parseInt(r.Trimestre)||1, dt: r.Date, r: r.Resultat||'En cours' }));
-    parts    = ptData.map(r => ({ id: r.ID, n: r.NomPartenaire, person: r.Personne, t: r.Type, q: parseInt(r.Trimestre)||1, d: r.Date, e: r.DateExpiration, isNew: r.NouveauPartenaire==='true'||r.NouveauPartenaire===true }));
+    ]), 9000);
+    projects = (pData||[]).map(r => ({ id: r.ID, n: r.Client, d: parseFloat(r.Jours)||0, a: parseFloat(r.Montant)||0, q: parseInt(r.Trimestre)||1, dt: r.Date, note: r.Note||'' }));
+    avs      = (avData||[]).map(r => ({ id: r.ID, n: r.Nom, cl: r.Client, t: r.Type, s: r.Commercial, q: parseInt(r.Trimestre)||1, dt: r.Date, r: r.Resultat||'En cours' }));
+    parts    = (ptData||[]).map(r => ({ id: r.ID, n: r.NomPartenaire, person: r.Personne, t: r.Type, q: parseInt(r.Trimestre)||1, d: r.Date, e: r.DateExpiration, isNew: r.NouveauPartenaire==='true'||r.NouveauPartenaire===true }));
     qp       = parseInt(localStorage.getItem('jd_qp')||'0');
-  } catch(e) { console.error('Erreur chargement:', e); }
-  
-  setTimeout(() => {
-    const splash = document.getElementById('splash');
-    if(splash) { splash.classList.add('fade'); setTimeout(()=>splash.remove(), 250); }
+  } catch(e) {
+    console.error('Erreur chargement Google Sheets:', e);
+    projects = projects || [];
+    avs = avs || [];
+    parts = parts || [];
+    qp = parseInt(localStorage.getItem('jd_qp')||'0');
+  } finally {
+    try { render(); } catch(e) { console.error('Erreur render:', e); }
+    removeSplashSafe();
     showLoading(false);
-  }, 300);
-  render();
+  }
 }
 
 
@@ -1106,7 +1240,123 @@ function setQP(pct){
   renderOverview();
 }
 
-function render(){renderOverview();renderPList();renderAVList();renderPTList();}
+
+
+function getManagerData(){
+  const total=projects.reduce((s,p)=>s+p.a,0);
+  const pal=getPal(total);
+  const fv=Math.round(VAR_F*pal.pct/100);
+  const avSuccess=avs.filter(a=>a.r==='Succès').length;
+  const avTgt=AV_TGT.reduce((s,v)=>s+v,0);
+  const ptT=parts.filter(p=>p.isNew).length;
+  const ptTgt=PT_TGT[3];
+  const noted=projects.filter(p=>p.note&&!isNaN(parseFloat(p.note)));
+  const avgNote=noted.length?Math.round((noted.reduce((s,p)=>s+parseFloat(p.note),0)/noted.length)*10)/10:null;
+  const billedPct=Math.round((Math.round(total/1000)/110)*100);
+  const avPct=avTgt?Math.round((avSuccess/avTgt)*100):0;
+  const ptPct=ptTgt?Math.round((ptT/ptTgt)*100):0;
+  const avgPct=Math.round((billedPct+avPct+ptPct)/3);
+  let autoPalier=0;
+  if(avgPct>=110) autoPalier=110; else if(avgPct>=100) autoPalier=100; else if(avgPct>=80) autoPalier=80; else if(avgPct>=50) autoPalier=50;
+  const autoOkrVar=autoPalier?Math.round(VAR_O*QPALS[autoPalier].m):0;
+  const okrVar=qp?Math.round(VAR_O*QPALS[qp].m):autoOkrVar;
+  const totalVar=fv+okrVar;
+  const s1Total=projects.filter(p=>p.q===1||p.q===2).reduce((s,p)=>s+p.a,0);
+  const s1Var=Math.round(VAR_F*getPal(s1Total).pct/100);
+  const s2Var=Math.max(0,totalVar-s1Var);
+  const nextPal=PALS.find(p=>p.min>total);
+  const latestDate=projects.map(p=>parseDate(p.dt)).filter(Boolean).sort((a,b)=>b-a)[0];
+  const now=new Date();
+  let elapsedMonth=(now.getFullYear()===2026)?now.getMonth()+1:(latestDate?latestDate.getMonth()+1:1);
+  elapsedMonth=Math.min(Math.max(elapsedMonth,1),12);
+  const projection=Math.round((total/elapsedMonth)*12);
+  const statusPct=Math.round((totalVar/VAR_T)*100);
+  let status='🔴 À risque', statusNote='Rythme actuel insuffisant au regard de la cible annuelle.';
+  if(statusPct>=100){status='🟢 Conforme'; statusNote='La variable estimée atteint ou dépasse la cible annuelle.';}
+  else if(statusPct>=75){status='🟡 Attention'; statusNote='La trajectoire est correcte, mais un levier reste à sécuriser.';}
+  return {total,pal,fv,avSuccess,avTgt,ptT,ptTgt,avgNote,billedPct,avPct,ptPct,avgPct,okrVar,totalVar,s1Var,s2Var,nextPal,projection,status,statusNote,statusPct};
+}
+
+function managerExtract(d){
+  const next=d.nextPal?`Prochain palier facturation : ${fmt(d.nextPal.min)} soit encore ${fmt(d.nextPal.min-d.total)} à facturer.`:'Palier maximum de facturation atteint.';
+  const note=d.avgNote!==null?`${d.avgNote}/10`:'non renseignée';
+  return `SYNTHÈSE PERFORMANCE 2026 — Antoine Renault
+
+Statut global : ${d.status}
+${d.statusNote}
+
+Variable estimée : ${fmt(d.totalVar)} / ${fmt(VAR_T)}
+- Part facturation : ${fmt(d.fv)}
+- Part OKR / manager : ${fmt(d.okrVar)}
+
+Facturation annuelle : ${fmt(d.total)}
+Palier actuel : ${d.pal.lbl}
+Projection fin d'année : ${fmt(d.projection)}
+${next}
+
+OKR mesurables :
+- Montant facturé : ${d.billedPct}% de l'objectif 110k€
+- Avant-ventes réussies : ${d.avSuccess}/${d.avTgt} (${d.avPct}%)
+- Nouveaux partenaires : ${d.ptT}/${d.ptTgt} (${d.ptPct}%)
+- Satisfaction client moyenne : ${note}
+
+Versements estimés :
+- S1 : ${fmt(d.s1Var)}
+- S2 : ${fmt(d.s2Var)}
+
+Leviers prioritaires :
+${buildLeverText(d)}`;
+}
+
+function buildLeverText(d){
+  const lines=[];
+  if(d.nextPal) lines.push(`- Facturer ${fmt(d.nextPal.min-d.total)} supplémentaires pour atteindre le prochain palier.`);
+  const missingAv=Math.max(0,d.avTgt-d.avSuccess); if(missingAv) lines.push(`- Convertir ${missingAv} avant-vente(s) supplémentaire(s) pour sécuriser l'OKR avant-ventes.`);
+  const missingPt=Math.max(0,d.ptTgt-d.ptT); if(missingPt) lines.push(`- Certifier ${missingPt} nouveau(x) partenaire(s) pour atteindre l'objectif annuel.`);
+  if(d.avgNote===null) lines.push('- Renseigner les notes client pour fiabiliser la lecture satisfaction.');
+  if(!lines.length) lines.push('- Maintenir le rythme actuel et sécuriser la régularisation S2.');
+  return lines.join('\n');
+}
+
+function renderManager(){
+  const root=document.getElementById('tab-manager'); if(!root) return;
+  const d=getManagerData();
+  const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;};
+  set('mStatus',d.status); set('mStatusNote',d.statusNote); set('mTotalVar',fmt(d.totalVar)); set('mBilled',fmt(d.total)); set('mPalier',d.pal.lbl); set('mProjection',fmt(d.projection)); set('mS1',fmt(d.s1Var)); set('mS2',fmt(d.s2Var));
+  set('mProjectionNote', d.projection>=110000?'Projection alignée avec la cible 110k€':'Projection sous la cible 110k€');
+  const contrib=document.getElementById('mContrib');
+  if(contrib) contrib.innerHTML=`
+    <div class="contribution-row"><div><div class="c-title">Facturation</div><div class="c-sub">${d.pal.lbl}</div></div><div class="c-val">${fmt(d.fv)}</div></div>
+    <div class="contribution-row"><div><div class="c-title">Avant-ventes réussies</div><div class="c-sub">${d.avSuccess}/${d.avTgt} · ${d.avPct}% de l'objectif</div></div><div class="c-val">${d.avSuccess}</div></div>
+    <div class="contribution-row"><div><div class="c-title">Nouveaux partenaires</div><div class="c-sub">${d.ptT}/${d.ptTgt} · ${d.ptPct}% de l'objectif</div></div><div class="c-val">${d.ptT}</div></div>
+    <div class="contribution-row"><div><div class="c-title">Satisfaction client</div><div class="c-sub">Moyenne des notes renseignées</div></div><div class="c-val">${d.avgNote!==null?d.avgNote+'/10':'—'}</div></div>`;
+  const levers=document.getElementById('mLevers');
+  if(levers){
+    const items=[];
+    if(d.nextPal) items.push(`<div class="lever"><div class="lever-title">Palier facturation suivant</div><div class="lever-desc"><strong>${fmt(d.nextPal.min-d.total)}</strong> à facturer pour atteindre le palier ${d.nextPal.pct}%.</div></div>`);
+    const missingAv=Math.max(0,d.avTgt-d.avSuccess); if(missingAv) items.push(`<div class="lever"><div class="lever-title">Avant-ventes</div><div class="lever-desc"><strong>${missingAv}</strong> succès à sécuriser pour atteindre l'objectif annuel.</div></div>`);
+    const missingPt=Math.max(0,d.ptTgt-d.ptT); if(missingPt) items.push(`<div class="lever"><div class="lever-title">Partenaires</div><div class="lever-desc"><strong>${missingPt}</strong> nouveaux partenaires à certifier pour atteindre l'objectif.</div></div>`);
+    if(d.avgNote===null) items.push(`<div class="lever"><div class="lever-title">Satisfaction</div><div class="lever-desc">Renseigner les notes client pour fiabiliser l'évaluation qualitative.</div></div>`);
+    if(!items.length) items.push(`<div class="lever"><div class="lever-title">Maintien du rythme</div><div class="lever-desc">Les principaux objectifs sont couverts. Priorité à la sécurisation S2.</div></div>`);
+    levers.innerHTML=items.join('');
+  }
+  const extract=document.getElementById('managerExtractText'); if(extract) extract.textContent=managerExtract(d);
+}
+
+function copyManagerExtract(){
+  const text=document.getElementById('managerExtractText')?.textContent||managerExtract(getManagerData());
+  navigator.clipboard?.writeText(text).then(()=>alert('Extract copié.')).catch(()=>{prompt('Copie manuelle :',text);});
+}
+function downloadManagerExtract(){
+  const text=document.getElementById('managerExtractText')?.textContent||managerExtract(getManagerData());
+  const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='synthese-manager-performance-2026.txt';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),500);
+}
+function printManagerExtract(){
+  const page=document.getElementById('tab-manager'); if(page){page.classList.add('printing'); window.print(); setTimeout(()=>page.classList.remove('printing'),500);}
+}
+
+function render(){try{renderOverview();renderPList();renderAVList();renderPTList();renderManager();}catch(e){console.error('Erreur render global:',e);removeSplashSafe();}}
 
 // RESTORE QUAL
 if(qp&&QPALS[qp]){
