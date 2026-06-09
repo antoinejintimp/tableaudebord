@@ -1271,10 +1271,30 @@ function getManagerData(){
   elapsedMonth=Math.min(Math.max(elapsedMonth,1),12);
   const projection=Math.round((total/elapsedMonth)*12);
   const statusPct=Math.round((totalVar/VAR_T)*100);
-  let status='🔴 À risque', statusNote='Rythme actuel insuffisant au regard de la cible annuelle.';
-  if(statusPct>=100){status='🟢 Conforme'; statusNote='La variable estimée atteint ou dépasse la cible annuelle.';}
-  else if(statusPct>=75){status='🟡 Attention'; statusNote='La trajectoire est correcte, mais un levier reste à sécuriser.';}
-  return {total,pal,fv,avSuccess,avTgt,ptT,ptTgt,avgNote,billedPct,avPct,ptPct,avgPct,okrVar,totalVar,s1Var,s2Var,nextPal,projection,status,statusNote,statusPct};
+
+  // Statut manager : on se base sur le prochain seuil utile, pas uniquement sur le plafond annuel.
+  // Objectif : éviter de classer en rouge une situation proche d'un palier de variable.
+  let status='🔴 À risque', statusNote='Rythme actuel éloigné du prochain seuil utile.';
+  const nextGap = nextPal ? Math.max(0, nextPal.min - total) : 0;
+  const nextGapPct = nextPal ? nextGap / nextPal.min : 0;
+
+  if(statusPct>=100){
+    status='🟢 Conforme';
+    statusNote='La variable estimée atteint ou dépasse la cible annuelle.';
+  } else if(!nextPal){
+    status='🟢 Conforme';
+    statusNote='Tous les paliers de facturation sont atteints.';
+  } else if(projection>=nextPal.min){
+    status='🟢 Sur trajectoire palier';
+    statusNote=`Le rythme projeté permet d'atteindre le prochain palier (${nextPal.pct}%).`;
+  } else if(nextGapPct<=0.10 || nextGap<=5000){
+    status='🟡 En approche du palier';
+    statusNote=`Il manque ${fmt(nextGap)} pour atteindre le prochain palier (${nextPal.pct}%).`;
+  } else if(statusPct>=50 || avgPct>=50){
+    status='🟡 Attention';
+    statusNote='La trajectoire nécessite encore un levier, mais plusieurs indicateurs contribuent déjà positivement.';
+  }
+  return {total,pal,fv,avSuccess,avTgt,ptT,ptTgt,avgNote,billedPct,avPct,ptPct,avgPct,okrVar,totalVar,s1Var,s2Var,nextPal,projection,status,statusNote,statusPct,nextGap,nextGapPct};
 }
 
 function managerExtract(d){
@@ -1323,7 +1343,7 @@ function renderManager(){
   const d=getManagerData();
   const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;};
   set('mStatus',d.status); set('mStatusNote',d.statusNote); set('mTotalVar',fmt(d.totalVar)); set('mBilled',fmt(d.total)); set('mPalier',d.pal.lbl); set('mProjection',fmt(d.projection)); set('mS1',fmt(d.s1Var)); set('mS2',fmt(d.s2Var));
-  set('mProjectionNote', d.projection>=110000?'Projection alignée avec la cible 110k€':'Projection sous la cible 110k€');
+  set('mProjectionNote', d.nextPal ? (d.projection>=d.nextPal.min ? `Projection alignée avec le prochain palier ${d.nextPal.pct}%` : `Projection sous le prochain palier ${d.nextPal.pct}%`) : 'Plafond des paliers atteint');
   const contrib=document.getElementById('mContrib');
   if(contrib) contrib.innerHTML=`
     <div class="contribution-row"><div><div class="c-title">Facturation</div><div class="c-sub">${d.pal.lbl}</div></div><div class="c-val">${fmt(d.fv)}</div></div>
